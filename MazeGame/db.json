@@ -1,0 +1,28 @@
+﻿{
+    "lobby": {
+        "9302": {
+            "status": "waiting",
+            "startTime": "2009-04-12T20:44:55",
+            "winner": null,
+            "players": [
+                { "X": 32, "Y": 23, "color": [ 123, 432, 0 ] },
+                { "X": 32, "Y": 23, "color": [ 123, 432, 0 ] }
+            ]
+        },
+        "9303": {
+            "status": "waiting",
+            "startTime": "2009-04-12T20:44:55",
+            "winner": null,
+            "players": [
+                { "X": 32, "Y": 23, "color": [ 123, 432, 0 ] },
+                { "X": 32, "Y": 23, "color": [ 123, 432, 0 ] }
+            ]
+        }
+    }
+}
+
+// http://processingjs.org/reference/XMLElement/
+
+// http://processingjs.org/articles/PomaxGuide.html#json
+
+// http://forum.processing.org/two/discussion/5986/json-with-processing-js/p1

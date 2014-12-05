@@ -1,0 +1,8 @@
+start          : 414, 760
+end            : 477, 410
+//end            : 311, 420
+end            : 290, 702
+endImg         : assets/images/cheese.png | 20, 20
+background-url : assets/images/maze.png
+line           : 23, 56, 78, 78
+line           : 50, 120, 30, 100
