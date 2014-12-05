@@ -2,15 +2,19 @@
 {
     var parent;
     RectButton btnReady;
+    PImage bg;
 
     Lobby(parent) {
         this.parent = parent;
         //Style style = 
         btnReady = new RectButton("Ready", [10, 10, 300, 100, 5]);
+        bg = loadImage('assets/images/playScreen.png');
     }
 
     void Draw() {
-        rect(10, 10, 300, 100, 5);
+        
+        image(bg, 0, 0, parent.getScreenSize().X, parent.getScreenSize().Y);
+        //rect(10, 10, 300, 100, 5);
     }
     
     void MouseMoved() {

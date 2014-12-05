@@ -4,7 +4,7 @@
 //import "model/utils.js.*"
 
 int SCREEN_WIDTH = 800;
-int SCREEN_HEIGHT = 800;
+int SCREEN_HEIGHT = 600;
 
 // Global variables
 String view;
@@ -95,4 +95,8 @@ void startGame() {
 
 void resetApp() {
     setView('lobby');
+}
+
+void getGame() {
+    return game;
 }

@@ -2,14 +2,139 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Who moved my cheese!</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="Scripts/processing-1.3.6.min.js"></script>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
     <script>
         var proc = Processing.getInstanceById("canvasGame");
 
+        $(document).ready(function () {
+            LeaderBoard.init();
+        });
+
+
+        var LeaderBoard = function () {
+
+            var file = "scoreboard.txt";
+            var fileData;
+
+            var init = function () {
+                $.get(file, function (txt) {
+                    console.log(txt);
+                    var fileData = txt.split("\n");
+                    console.log(fileData);
+                    for (var i = 0, len = fileData.length; i < len; i++) {
+                        console.log(fileData[i]);
+                        var parts = fileData[i].split('|');
+                        add(parts[0], parts[1]);
+                    }
+                });
+            }
+
+            var add = function (name, score) {
+                score = parseInt(score);
+                $('.leaderBoard').each(function (i, val) {
+                    var found = false;
+                    $(this).find('li.player').each(function (i, val) {
+                        if ($(this).data('score') <= score) {
+                            $(this).before('<li class="player" data-score="' + score + '"><div><span class="name">' + name + '</span><span class="score">' + score + 's</span></div></li>');
+                            found = true;
+                            return false;
+                        }
+                    });
+                    if (!found) $(this).find('ol').append('<li class="player" data-score="' + score + '"><div><span class="name">' + name + '</span><span class="score">' + score + 's</span></div></li>');
+                });
+            }
+
+            var save = function () {
+
+            }
+
+            return {
+                init: init,
+                add: add,
+                save: save
+            };
+        }();
+
+        function showAddDialog(score) {
+            $('#dialog input[name="score"]').val(score);
+            $('#dialog').dialog();
+            $('#dialog .addScore').unbind().bind('click', function () {
+                LeaderBoard.add($('#dialog input[name="name"]').val(), $('#dialog input[name="score"]').val());
+                $("#dialog").dialog('close');
+            });
+        }
     </script>
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        #dialog {
+            display: none;
+        }
+        #canvasGame {
+            float: left;
+        }
+        .leaderBoard {
+            position: relative;
+            width: 300px;
+            height: 600px;
+            overflow-y: auto;
+            float: left;
+            background: url('assets/images/background.png');/*#FBF5EB;*/
+            border: 8px solid #ef8767;
+            box-sizing: border-box;
+            border-radius: 0 8px 8px 0;
+            color: #49301a;
+        }
+        .leaderBoard .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            opacity: 0.33;
+        }
+        .leaderBoard h1 {
+            margin: 0;
+            background: #fff48a;
+            font-weight: lighter;
+            padding: 10px;
+            text-align: center;
+        }
+        .leaderBoard .score {
+            float: right;
+        }
+        .leaderBoard ol {
+            color: #000;
+            font-weight: 600;
+        }
+        .leaderBoard li.player {
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .leaderBoard li.player div {
+            border-bottom: 1px dashed #808080;
+        }
+    </style>
 </head>
 <body>
     <canvas id="canvasGame" datasrc="maze.js view/lobby.js view/game.js view/result.js model/ball.js model/map.js lib/timer.js lib/utils.js" width="sketchWidth" height="sketchHeight"></canvas>
     <!--<canvas id="canvasDemo" datasrc="demo.js" width="sketchWidth" height="sketchHeight"></canvas>-->
+    <div class="leaderBoard">
+        <h1>Leaderboard</h1>
+        <div class="overlay"></div>
+        <ol>
+        </ol>
+    </div>
+    <div id="dialog" title="Basic dialog">
+        <input type="hidden" name="score" />
+        <b>Name:</b>
+        <input type="text" name="name" />
+        <input type="button" class="addScore" value="Submit" />
+    </div>
 </body>
 </html>

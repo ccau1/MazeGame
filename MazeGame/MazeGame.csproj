@@ -57,13 +57,20 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\images\background.png" />
     <Content Include="assets\images\cheese.png" />
     <Content Include="assets\images\cheese.svg" />
     <Content Include="assets\images\gameBG.jpg" />
+    <Content Include="assets\images\gameOverScreen.png" />
     <Content Include="assets\images\maze.png" />
     <Content Include="assets\images\maze.svg" />
     <Content Include="assets\images\mouse.png" />
     <Content Include="assets\images\mouse.svg" />
+    <Content Include="assets\images\mouse2.png" />
+    <Content Include="assets\images\playScreen.png" />
+    <Content Include="assets\images\ranOutOfLivesScreen.png" />
+    <Content Include="assets\images\timesUpScreen.png" />
+    <Content Include="assets\images\winnerScreen.png" />
     <Content Include="assets\plugins\bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="assets\plugins\bootstrap\css\bootstrap.css.map" />
     <Content Include="assets\plugins\bootstrap\fonts\glyphicons-halflings-regular.eot" />
@@ -72,6 +79,7 @@
     <Content Include="model\ball.js" />
     <Content Include="lib\utils.js" />
     <Content Include="lib\timer.js" />
+    <Content Include="scoreboard.txt" />
     <Content Include="view\game.js" />
     <Content Include="model\map.js" />
     <Content Include="packages.config" />

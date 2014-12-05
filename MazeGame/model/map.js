@@ -6,6 +6,7 @@ class Map
     ArrayList mapShapes;
     Point ballStartPos;
     ArrayList ballEndPos;
+    int endPointCount;
     PImage bg, endImg;
     Style endStyle;
 
@@ -18,6 +19,7 @@ class Map
         String[] tmpShapes = loadStrings('map/' + map + '.txt');
         mapShapes = new ArrayList();
         ballEndPos = new ArrayList();
+        endPointCount = 0;
 
         for (int i = 0; i < tmpShapes.length; i++) {
             if (match(tmpShapes[i], "^//.*$") == null) {
@@ -28,8 +30,9 @@ class Map
                         case 'start':
                             ballStartPos = new Point(parseFloat(parts[1].split(',')[0]), parseFloat(parts[1].split(',')[1]));
                         break;
-                        case 'end':
+                        case 'item':
                             ballEndPos.add(new Point(parseFloat(parts[1].split(',')[0]), parseFloat(parts[1].split(',')[1])));
+                            endPointCount++;
                         break;
                         case 'endImg':
                             String[] sections = (new String(parts[1])).split('|');
@@ -96,25 +99,27 @@ class Map
 
         }
 
-    void RemovePickUp(Ball ball) {
+    int RemovePickUp(Ball ball) {
         Point ballPoint = ball.GetPoint();
         int ballWidth = ball.getStyle().width;
         int ballHeight = ball.getStyle().height;
         Point ballMidPoint = new Point(ballPoint.X + ballWidth / 2, ballPoint.Y + ballHeight / 2);
+        int ballsRemoved = 0;
 
         for (int i = 0; i < ballEndPos.size(); i++) {
             Point ballEndPoint = (Point) ballEndPos.get(i);
             println('checking...');
-            println('X:: ' + ballMidPoint.X + '-->' + ballEndPoint.X + ', ' + ballMidPoint.X + '<--' + (ballEndPoint.X + endStyle.width));
-            println('Y:: ' + ballMidPoint.Y + '-->' + ballEndPoint.Y + ', ' + ballMidPoint.Y + '<--' + (ballEndPoint.Y + endStyle.height));
+            //println('X:: ' + ballMidPoint.X + '-->' + ballEndPoint.X + ', ' + ballMidPoint.X + '<--' + (ballEndPoint.X + endStyle.width));
+            //println('Y:: ' + ballMidPoint.Y + '-->' + ballEndPoint.Y + ', ' + ballMidPoint.Y + '<--' + (ballEndPoint.Y + endStyle.height));
             if (((ballPoint.Y  > ballEndPoint.Y && ballPoint.Y < ballEndPoint.Y + endStyle.height) || (ballPoint.Y + ballHeight > ballEndPoint.Y && ballPoint.Y + ballHeight < ballEndPoint.Y + endStyle.height)) && ballMidPoint.X > ballEndPoint.X && ballMidPoint.X < ballEndPoint.X + endStyle.width) { // top/bottom boundary
                 ballEndPos.remove(i);
-            }
-            if (((ballPoint.X  > ballEndPoint.X && ballPoint.X < ballEndPoint.X + endStyle.width) || (ballPoint.X + ballWidth > ballEndPoint.X && ballPoint.X + ballWidth < ballEndPoint.X + endStyle.width)) && ballMidPoint.Y > ballEndPoint.Y && ballMidPoint.Y < ballEndPoint.Y + endStyle.height) { // left/right boundary
+                ballsRemoved++;
+            } else if (((ballPoint.X  > ballEndPoint.X && ballPoint.X < ballEndPoint.X + endStyle.width) || (ballPoint.X + ballWidth > ballEndPoint.X && ballPoint.X + ballWidth < ballEndPoint.X + endStyle.width)) && ballMidPoint.Y > ballEndPoint.Y && ballMidPoint.Y < ballEndPoint.Y + endStyle.height) { // left/right boundary
                 ballEndPos.remove(i);
+                ballsRemoved++;
             }
 
-            println((ballMidPoint.X > ballEndPoint.X) + ', ' + (ballMidPoint.X < (ballEndPoint.X + endStyle.width)) + ', ' + (ballMidPoint.Y > ballEndPoint.Y) + ', ' + (ballMidPoint.Y < ballEndPoint.Y + endStyle.height));
+            //println((ballMidPoint.X > ballEndPoint.X) + ', ' + (ballMidPoint.X < (ballEndPoint.X + endStyle.width)) + ', ' + (ballMidPoint.Y > ballEndPoint.Y) + ', ' + (ballMidPoint.Y < ballEndPoint.Y + endStyle.height));
 
             // trial #2 (only ball mid point)
 
@@ -133,12 +138,16 @@ class Map
             //    ballEndPos.remove(i);
             //}
         }
-    }
+        return ballsRemoved;
+        }
     String GetWallColor() {
         return '7F4945';
         }
 
     String GetEndColor() {
         return 'FEFE33';
+        }
+    int endPointLeft() {
+        return ballEndPos.size();
     }
 }

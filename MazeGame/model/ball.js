@@ -23,7 +23,7 @@ class Ball
         else
             this.style = new Style();
 
-        ballImg = loadImage('assets/images/mouse.png');
+        ballImg = loadImage('assets/images/mouse2.png');
 
         waitForMouse = true;
     }
@@ -35,15 +35,23 @@ class Ball
         stroke(style.stroke); 
 
         if (!waitForMouse) {
-            pos.X+=(mousePos.X - pos.X)/delay;
-            pos.Y+=(mousePos.Y - pos.Y)/delay;
+            //int[] collidedSides = GetCollisionSides();
+            //if (pos.Y < mousePos.Y  && collidedSides[0] == 0) 
+                pos.Y+=(mousePos.Y - pos.Y)/delay;
+            //else if (pos.Y > mousePos.Y && collidedSides[2] == 0)
+            //    pos.Y+=(mousePos.Y - pos.Y)/delay;
+
+            //if (pos.X < mousePos.X && collidedSides[1] == 0)
+            //    pos.X+=(mousePos.X - pos.X)/delay;
+            //else if (pos.X > mouse.X && collidedSides[3] == 0)
+                pos.X+=(mousePos.X - pos.X)/delay;
         }
 
         translate(pos.X, pos.Y);
         float angle = atan((mousePos.Y - pos.Y)/(mousePos.X - pos.X));
-        if ( angle < 0 ) angle = PI * angle;
+        if ( angle < 0 ) angle = PI + angle + 90;
 
-        println(angle);
+        //println(angle);
         rotate(angle - 90);
         //  Draw img
         image(ballImg, -1 * style.width / 2, -1 * style.height / 2, style.width, style.height);
@@ -92,5 +100,33 @@ class Ball
             }
         }
         return false;
+    }
+
+    int[] GetCollisionSides(String wallColor) {
+        PImage c = get(pos.X - style.width / 2, pos.Y - style.height / 2, style.width, style.height);
+        int[] pix = c.pixels;
+    
+        int[] collidedSides = {0, 0, 0, 0};
+
+        for (var i = 0; i < pix.length; i++) {
+            if (i < style.width) {                              // top
+                if (hex(pix[i], 6) == wallColor) {
+                    collidedSides[0];
+                }
+            } else if (i % style.width == 0) {                  // left
+                if (hex(pix[i], 6) == wallColor) {
+                    collidedSides[3];
+                }
+            } else if (i % style.width == style.width - 1) {    // right
+                if (hex(pix[i], 6) == wallColor) {
+                    collidedSides[1];
+                }
+            } else if (i >= pix.length - style.width) {         // bottom
+                if (hex(pix[i], 6) == wallColor) {
+                    collidedSides[2];
+                }
+            }
+        }
+        return collidedSides;
     }
 }
